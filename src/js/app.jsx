@@ -3,67 +3,34 @@ require('../sass/style.scss');
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-
-// add ID to manage data - not rely on name alone. 
-// generate a new ID every time? or just have an array/array indices?
-let testData = {
-	start: {
-		options: [
-			'is',
-			'was',
-			'test a',
-			'test b',
-		]
-	},
-	is: {
-		options: [
-			'a creative technologist',
-			'a programmer',
-			'an artist',
-			'an educator',
-		]
-	},
-	['a creative technologist']: {
-		options: [
-			'working at'
-		]
-	},
-	['a programmer']: {
-		options: [
-			'working on',
-			'proficient in',
-		],
-	},
-	['an artist']: {
-		options: [
-			'interested in',
-		]
-	},
-	['an educator']: {
-		options: [
-			'teaching at',
-		]
-	}
-};
-
 let arrayData = [
 	{
 		name: 'start',
+		index: 0,
 		options: [
 			{	text: 'is', target: 1 },
 		]
 	},
 	{
 		name: 'is',
+		index: 1,
 		options: [
-			{ text: 'a technologist', target: 1 },
+			{ text: 'a technologist', target: 2 },
 			{ text: 'a programmer', target: null },
 			{ text: 'an artist', target: null },
 			{ text: 'an educator', target: null }
 		]
 	},
 	{
-
+		name: 'a technologist',
+		index: 2,
+		options: [
+			{ text: 'working at', target: null, post: 'Gallagher and Associates' },
+			{ text: 'working on', target: null },
+			{ text: 'working in', target: null },
+		]
+	},
+	{
 	}
 
 ]
@@ -117,6 +84,9 @@ class Form extends React.Component {
 }
 
 class App extends React.Component {
+	constructor(props) {
+		super(props);
+	}
 
 	render() {
 		return (
