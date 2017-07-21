@@ -1,0 +1,27 @@
+$header-font-size: 32px;
+
+.header-element {
+	margin: 0 0.5em 0 0;
+}
+
+div#container {
+	margin: 50px;
+}
+
+div#header {
+	padding: 100px 0 0;
+	font-family: Menlo;
+	font-size: $header-font-size;
+	line-height: 1.8em;
+	background-color: white;
+}
+
+select.header-element {
+	height: 50px;
+	font-family: Menlo;
+	font-size: $header-font-size;
+}
+
+.select-options * {
+	font-family: Menlo;
+}
