@@ -1,27 +1,35 @@
-$header-font-size: 32px;
+$typeface: Menlo;
+$header-font-size: 18px;
+
+#container {
+	padding: 50px;
+}
+
+#header {
+	padding: 20px 0 0 0;
+	font-family: $typeface;
+	font-size: $header-font-size;
+	line-height: 1.9em;
+	background-color: white;
+}
+
 
 .header-element {
 	margin: 0 0.5em 0 0;
 }
 
-div#container {
-	margin: 50px;
-}
-
-div#header {
-	padding: 100px 0 0;
-	font-family: Menlo;
-	font-size: $header-font-size;
-	line-height: 1.8em;
-	background-color: white;
-}
-
-select.header-element {
-	height: 50px;
-	font-family: Menlo;
-	font-size: $header-font-size;
+select {
+	&.header-element {
+		height: 1.7em;
+		font-family: $typeface;
+		font-size: $header-font-size;
+		
+		&.hidden {
+			display: none;
+		}
+	}
 }
 
 .select-options * {
-	font-family: Menlo;
+	font-family: $typeface;
 }
