@@ -1,5 +1,5 @@
 $typeface: Menlo;
-$header-font-size: 18px;
+$header-font-size: 24px;
 
 #container {
 	padding: 50px;
@@ -9,7 +9,7 @@ $header-font-size: 18px;
 	padding: 20px 0 0 0;
 	font-family: $typeface;
 	font-size: $header-font-size;
-	line-height: 1.9em;
+	line-height: 2.5em;
 	background-color: white;
 }
 
@@ -20,7 +20,7 @@ $header-font-size: 18px;
 
 select {
 	&.header-element {
-		height: 1.7em;
+		height: 1.8em;
 		font-family: $typeface;
 		font-size: $header-font-size;
 		
