@@ -191,34 +191,41 @@ class App extends React.Component {
 
 		this.generate = this.generate.bind(this);
 		this.remove = this.remove.bind(this);
+
+		this.handleWheel = this.handleWheel.bind(this);
+
+		this.readyToGenerate = true;
 	}
 
-	getCurrentForm() {
-		console.log('last form: ')
-		console.log(this.lastForm);
-	}
-
-	getSecondLastForm() {
-		console.log('the second to last form: ');
-		console.log(this.secondLastForm);
+	componentDidMount() {
+		window.addEventListener('wheel', this.handleWheel);
+		// window.addEventListener('scroll', (e) => {console.log('hi');})
 	}
 
 	generate() {
-		this.lastForm.setToValue(Math.floor(Math.random() * (this.lastForm.selectForm.options.length - 1))); // get a random val, call a random function?
+		this.lastForm.setToValue(Math.floor(Math.random() * (this.lastForm.selectForm.options.length - 1)));
 	}
 
 	remove() {
 		if (this.secondLastForm) this.secondLastForm.reset();
 	}
 
+	handleWheel(event) {
+		event.preventDefault();
+		if (this.readyToGenerate) {
+			this.readyToGenerate = false;
+			setTimeout(() => {this.readyToGenerate = true;}, 100);
+			if (event.deltaY > 0) this.generate();
+			else if (event.deltaY < 0) this.remove();
+		}
+	}
+
 	render() {
 		return (
 			<div id='container'>
-					<div id='temp'>
+					<div id='testing'>
 						<button onClick={ this.generate }>generate</button>
 						<button onClick={ this.remove }>remove</button>
-						<button onClick={ this.getCurrentForm.bind(this) }>check last</button>
-						<button onClick={ this.getSecondLastForm.bind(this) }>check second last</button>
 					</div>
 
 				<div id='header'>
