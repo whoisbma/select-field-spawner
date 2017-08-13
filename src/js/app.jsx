@@ -5,6 +5,12 @@ import ReactDOM from 'react-dom';
 
 import { arrayData } from './data.jsx';
 
+// i need to know what was the last form element that got created.
+// could have an app-level ref that points to it.
+// pass it down to each one that gets created.
+// what about passing them back up, though?
+
+
 class Form extends React.Component {
 	constructor(props) {
 		super(props);
@@ -15,31 +21,63 @@ class Form extends React.Component {
 		};
 
 		this.handleChange = this.handleChange.bind(this);
+		this.setToValue = this.setToValue.bind(this);
+
+		this.setForRemovalFromChild = this.setForRemovalFromChild.bind(this);
 	}
 
+	componentDidMount() {
+		this.props.setForAdd(this); 
+	}
+
+	componentWillUpdate(nextProps, nextState) { }
+
+	componentDidUpdate() { }
+
 	// componentWillMount() {}
-	// componentDidMount() {}
 	// componentWillReceiveProps(nextProps) {}
 	// shouldComponentUpdate() {}	
-	// componentWillUpdate(nextProps, nextState) {}
-	// componentDidUpdate() {}
 	// componentWillUnmount() {}
 
 	handleChange(event) {
-		this.setNewWidth(event.target.value);
-		if (this.state.value === -1) {
-			this.selectForm.options[0].remove();
+		this.setToValue(event.target.value);
+	}
+
+	reset() {	
+		if (this.state.value != -1) {
+			if (this.props.setParentForRemoval) this.props.setParentForRemoval();
+			this.props.setForAdd(this);
+	
+			let opt1 = document.createElement('option');
+			opt1.value = "-1";
+			opt1.text = "-";
+			opt1.key = "-1";
+	
+			this.selectForm.options.add(opt1, 0);
+			this.setState({
+				value: -1,
+				width: '50px',
+			});
 		}
 	}
 
-	setNewWidth(width) {
+	setToValue(n) {
+		this.props.setForRemoval(this); 
+		if (this.state.value === -1) {
+			this.selectForm.options[0].remove();
+		}
+		this.selectForm.selectedIndex = n;
 		this.hiddenOption.innerHTML = this.selectForm.options[this.selectForm.selectedIndex].textContent;
 		this.hiddenSelect.style.display = 'initial';
 		this.setState({ 
-			value: width,
+			value: n,
 			width: this.hiddenSelect.clientWidth + 'px',
 		});
 		this.hiddenSelect.style.display = 'none';
+	}
+
+	setForRemovalFromChild() {
+		this.props.setForRemoval(this);
 	}
 
 	getOptions() {
@@ -77,6 +115,9 @@ class Form extends React.Component {
 				<Form
 					id={ nextData.options[this.state.value].target }
 					key={ nextData.options[this.state.value].text }
+					setForAdd={ this.props.setForAdd }
+					setForRemoval={ this.props.setForRemoval }
+					setParentForRemoval={ this.setForRemovalFromChild }
 				/>
 			);
 		// if its a null target, make a custom form
@@ -99,7 +140,13 @@ class Form extends React.Component {
 			newForm.options.push({ text: 'and', target: 0 });
 			
 			return (
-				<Form custom={ newForm } key={ newForm.name } />
+				<Form 
+					custom={ newForm } 
+					key={ newForm.name } 
+					setForAdd={ this.props.setForAdd }
+					setForRemoval={ this.props.setForRemoval }
+					setParentForRemoval={ this.setForRemovalFromChild }
+				/>
 			);
 		} else {
 			return null;
@@ -129,21 +176,58 @@ class Form extends React.Component {
 
 Form.defaultProps = {
 	id: null,
-	value: null,
 	custom: null,
-}
+	setForAdd: null,
+	setForRemoval: null,
+	setParentForRemoval: null,
+};
 
 class App extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.lastForm = null;
+		this.secondLastForm = null;
+
+		this.generate = this.generate.bind(this);
+		this.remove = this.remove.bind(this);
+	}
+
+	getCurrentForm() {
+		console.log('last form: ')
+		console.log(this.lastForm);
+	}
+
+	getSecondLastForm() {
+		console.log('the second to last form: ');
+		console.log(this.secondLastForm);
+	}
+
+	generate() {
+		this.lastForm.setToValue(Math.floor(Math.random() * (this.lastForm.selectForm.options.length - 1))); // get a random val, call a random function?
+	}
+
+	remove() {
+		if (this.secondLastForm) this.secondLastForm.reset();
 	}
 
 	render() {
 		return (
 			<div id='container'>
+					<div id='temp'>
+						<button onClick={ this.generate }>generate</button>
+						<button onClick={ this.remove }>remove</button>
+						<button onClick={ this.getCurrentForm.bind(this) }>check last</button>
+						<button onClick={ this.getSecondLastForm.bind(this) }>check second last</button>
+					</div>
+
 				<div id='header'>
 					<span className='header-element'>Bryan Ma</span> 
-					<Form id={ 0 }/>
+					<Form 
+						id={ 0 }
+						setForAdd={ (childRef) => { this.lastForm = childRef } }
+						setForRemoval={ (childRef) => { this.secondLastForm = childRef } }
+					/>
 					<span>in Brooklyn, New York</span>
 				</div>
 			</div>
