@@ -16,6 +16,7 @@ $header-font-size: 24px;
 
 .header-element {
 	margin: 0 0.5em 0 0;
+
 }
 
 select {
@@ -23,6 +24,20 @@ select {
 		height: 1.8em;
 		font-family: $typeface;
 		font-size: $header-font-size;
+		position: relative;
+
+
+		transition: left 0.5s, opacity 0.1s linear;
+		-webkit-transition: left 0.5s, opacity 0.1s linear;	
+
+		&.on {
+			opacity: 1;
+			left: 0px;
+		}
+		&.off{
+			opacity: 0;
+			left: 50px;
+		}
 		
 		&.hidden {
 			display: none;

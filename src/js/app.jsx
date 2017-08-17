@@ -15,9 +15,12 @@ class Form extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.isRoot = props.setParentForRemoval ? false : true;
+
 		this.state = { 
 			value: -1,
 			width: '50px',
+			visible: this.isRoot,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -27,7 +30,9 @@ class Form extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.setForAdd(this); 
+		this.props.setForAdd(this);
+		// setTimeout(() => { this.setState({ visible: true }); }, 10);
+		
 	}
 
 	componentWillUpdate(nextProps, nextState) { }
@@ -44,21 +49,25 @@ class Form extends React.Component {
 	}
 
 	reset() {	
-		if (this.state.value != -1) {
-			if (this.props.setParentForRemoval) this.props.setParentForRemoval();
-			this.props.setForAdd(this);
-	
-			let opt1 = document.createElement('option');
-			opt1.value = "-1";
-			opt1.text = "-";
-			opt1.key = "-1";
-	
-			this.selectForm.options.add(opt1, 0);
-			this.setState({
-				value: -1,
-				width: '50px',
-			});
-		}
+		if (!this.isRoot) this.setState({ visible: false });
+
+		setTimeout(() => {
+			if (this.state.value != -1) {
+				if (!this.isRoot) this.props.setParentForRemoval();
+				this.props.setForAdd(this);
+		
+				let opt1 = document.createElement('option');
+				opt1.value = "-1";
+				opt1.text = "-";
+				opt1.key = "-1";
+		
+				this.selectForm.options.add(opt1, 0);
+				this.setState({
+					value: -1,
+					width: '50px',
+				});
+			}
+		}, 100);
 	}
 
 	setToValue(n) {
@@ -74,6 +83,10 @@ class Form extends React.Component {
 			width: this.hiddenSelect.clientWidth + 'px',
 		});
 		this.hiddenSelect.style.display = 'none';
+
+		setTimeout(() => {
+			this.setState({ visible: true });
+		}, 100);	
 	}
 
 	setForRemovalFromChild() {
@@ -156,7 +169,7 @@ class Form extends React.Component {
 	render() {
 		return (
 			<span>
-				<select className='header-element'
+				<select className={ 'header-element ' + (this.state.visible ? 'on' : 'off') }
 								value={ this.state.value } 
 								style={ { width: this.state.width } } 
 								onChange={ this.handleChange }
@@ -211,10 +224,10 @@ class App extends React.Component {
 	}
 
 	handleWheel(event) {
-		event.preventDefault();
+		// event.preventDefault();
 		if (this.readyToGenerate) {
 			this.readyToGenerate = false;
-			setTimeout(() => {this.readyToGenerate = true;}, 100);
+			setTimeout(() => {this.readyToGenerate = true;}, 5);
 			if (event.deltaY > 0) this.generate();
 			else if (event.deltaY < 0) this.remove();
 		}
@@ -235,7 +248,6 @@ class App extends React.Component {
 						setForAdd={ (childRef) => { this.lastForm = childRef } }
 						setForRemoval={ (childRef) => { this.secondLastForm = childRef } }
 					/>
-					<span>in Brooklyn, New York</span>
 				</div>
 			</div>
 		);
