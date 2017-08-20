@@ -5,34 +5,32 @@ import ReactDOM from 'react-dom';
 
 import { arrayData } from './data.jsx';
 
-// i need to know what was the last form element that got created.
-// could have an app-level ref that points to it.
-// pass it down to each one that gets created.
-// what about passing them back up, though?
-
-
 class Form extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.isRoot = props.setParentForRemoval ? false : true;
+		this.isRoot = props.setParentForFutureRemoval ? false : true;
 
 		this.state = { 
 			value: -1,
 			width: '50px',
 			visible: this.isRoot,
+			triggerChildKillAnimation: false,
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.setToValue = this.setToValue.bind(this);
 
 		this.setForRemovalFromChild = this.setForRemovalFromChild.bind(this);
+
+		this.mountAnimationTimeout = null;
 	}
 
 	componentDidMount() {
 		this.props.setForAdd(this);
-		// setTimeout(() => { this.setState({ visible: true }); }, 10);
-		
+		this.mountAnimationTimeout = setTimeout(() => {
+			this.setState({ visible: true });
+		} , 1);
 	}
 
 	componentWillUpdate(nextProps, nextState) { }
@@ -40,34 +38,51 @@ class Form extends React.Component {
 	componentDidUpdate() { }
 
 	// componentWillMount() {}
-	// componentWillReceiveProps(nextProps) {}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.triggerKillAnimation) {
+			this.setState({ visible: false });
+			this.state.triggerChildKillAnimation = false;
+		}
+	}
+
+	//i'm never receiving the props before its already unmounted. i need to delay the mounting.
+
 	// shouldComponentUpdate() {}	
-	// componentWillUnmount() {}
+
+	componentWillUnmount() {
+		clearTimeout(this.mountAnimationTimeout);
+	}
 
 	handleChange(event) {
 		this.setToValue(event.target.value);
 	}
 
 	reset() {	
-		if (!this.isRoot) this.setState({ visible: false });
 
-		setTimeout(() => {
-			if (this.state.value != -1) {
-				if (!this.isRoot) this.props.setParentForRemoval();
+		this.setState({triggerChildKillAnimation: true});
+
+		if (this.state.value != -1) {
+			setTimeout(()=>{
+				if (!this.isRoot) this.props.setParentForFutureRemoval();
+
 				this.props.setForAdd(this);
-		
+
 				let opt1 = document.createElement('option');
 				opt1.value = "-1";
 				opt1.text = "-";
 				opt1.key = "-1";
-		
+
 				this.selectForm.options.add(opt1, 0);
+
 				this.setState({
 					value: -1,
 					width: '50px',
 				});
-			}
-		}, 100);
+			}, 100);
+			
+		}	
+		// if the parent's state is -1, then there will be no children. how to tell the children to animate away? send a prop down? 
 	}
 
 	setToValue(n) {
@@ -83,10 +98,6 @@ class Form extends React.Component {
 			width: this.hiddenSelect.clientWidth + 'px',
 		});
 		this.hiddenSelect.style.display = 'none';
-
-		setTimeout(() => {
-			this.setState({ visible: true });
-		}, 100);	
 	}
 
 	setForRemovalFromChild() {
@@ -130,7 +141,8 @@ class Form extends React.Component {
 					key={ nextData.options[this.state.value].text }
 					setForAdd={ this.props.setForAdd }
 					setForRemoval={ this.props.setForRemoval }
-					setParentForRemoval={ this.setForRemovalFromChild }
+					setParentForFutureRemoval={ this.setForRemovalFromChild }
+					triggerKillAnimation={ this.state.triggerChildKillAnimation }
 				/>
 			);
 		// if its a null target, make a custom form
@@ -158,7 +170,8 @@ class Form extends React.Component {
 					key={ newForm.name } 
 					setForAdd={ this.props.setForAdd }
 					setForRemoval={ this.props.setForRemoval }
-					setParentForRemoval={ this.setForRemovalFromChild }
+					setParentForFutureRemoval={ this.setForRemovalFromChild }
+					triggerKillAnimation={ this.state.triggerChildKillAnimation }
 				/>
 			);
 		} else {
@@ -192,7 +205,8 @@ Form.defaultProps = {
 	custom: null,
 	setForAdd: null,
 	setForRemoval: null,
-	setParentForRemoval: null,
+	setParentForFutureRemoval: null,
+	triggerKillAnimation: null,
 };
 
 class App extends React.Component {
@@ -224,12 +238,17 @@ class App extends React.Component {
 	}
 
 	handleWheel(event) {
-		// event.preventDefault();
+		event.preventDefault();
+
 		if (this.readyToGenerate) {
 			this.readyToGenerate = false;
-			setTimeout(() => {this.readyToGenerate = true;}, 5);
-			if (event.deltaY > 0) this.generate();
-			else if (event.deltaY < 0) this.remove();
+			setTimeout(() => {this.readyToGenerate = true;}, 100);
+			if (event.deltaY > 0) {
+				this.generate();
+			}
+			else if (event.deltaY < 0) {
+				this.remove();
+			}
 		}
 	}
 
