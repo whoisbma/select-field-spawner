@@ -23,7 +23,9 @@ class Form extends React.Component {
 
 		this.setForRemovalFromChild = this.setForRemovalFromChild.bind(this);
 
+		this.readyToGenerateTimeout = null;
 		this.mountAnimationTimeout = null;
+		this.setRemovalTimeout = null;
 	}
 
 	componentDidMount() {
@@ -52,6 +54,8 @@ class Form extends React.Component {
 
 	componentWillUnmount() {
 		clearTimeout(this.mountAnimationTimeout);
+		clearTimeout(this.readyToGenerateTimeout);
+		clearTimeout(this.setRemovalTimeout);
 	}
 
 	handleChange(event) {
@@ -63,7 +67,7 @@ class Form extends React.Component {
 		this.setState({triggerChildKillAnimation: true});
 
 		if (this.state.value != -1) {
-			setTimeout(()=>{
+			this.setRemovalTimeout = setTimeout(()=>{
 				if (!this.isRoot) this.props.setParentForFutureRemoval();
 
 				this.props.setForAdd(this);
@@ -242,7 +246,7 @@ class App extends React.Component {
 
 		if (this.readyToGenerate) {
 			this.readyToGenerate = false;
-			setTimeout(() => {this.readyToGenerate = true;}, 100);
+			this.readyToGenerateTimeout = setTimeout(() => {this.readyToGenerate = true;}, 100);
 			if (event.deltaY > 0) {
 				this.generate();
 			}
