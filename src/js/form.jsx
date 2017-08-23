@@ -1,6 +1,7 @@
 require('../sass/style.scss');
 
 import React from 'react';
+import { Text } from './text.jsx';
 import { arrayData } from './data.jsx';
 
 export class Form extends React.Component {
@@ -45,8 +46,6 @@ export class Form extends React.Component {
 		}
 	}
 
-	//i'm never receiving the props before its already unmounted. i need to delay the mounting.
-
 	// shouldComponentUpdate() {}	
 
 	componentWillUnmount() {
@@ -80,9 +79,8 @@ export class Form extends React.Component {
 					width: '50px',
 				});
 			}, 100);
-			
 		}	
-		// if the parent's state is -1, then there will be no children. how to tell the children to animate away? send a prop down? 
+
 	}
 
 	setToValue(n) {
@@ -145,6 +143,7 @@ export class Form extends React.Component {
 					triggerKillAnimation={ this.state.triggerChildKillAnimation }
 				/>
 			);
+
 		// if its a null target, make a custom form
 		} else if (nextData.options[this.state.value] != null &&
 							 nextData.options[this.state.value].target == null) {

@@ -2,7 +2,9 @@ require('../sass/style.scss');
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { RecursiveElement } from './recursiveElement.jsx';
 import { Form } from './form.jsx';
+import { Text } from './text.jsx';
 
 class App extends React.Component {
 	constructor(props) {
