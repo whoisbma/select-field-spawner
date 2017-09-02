@@ -20,6 +20,27 @@ export class RecursiveElement extends React.Component {
 	componentWillReceiveProps(nextProps) {}
 	componentWillUnmount() {}
 
+	handleChange() {
+
+	}
+
+	reset() {
+
+	}
+
+	setForRemovalFromChild() {
+
+	}
+
+	getChild() {
+
+	}
+
+	render() {
+		
+	}
+
+
 } 
 
 RecursiveElement.defaultProps = {

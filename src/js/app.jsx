@@ -57,11 +57,6 @@ class App extends React.Component {
 	render() {
 		return (
 			<div id='container'>
-					<div id='testing'>
-						<button onClick={ this.generate }>generate</button>
-						<button onClick={ this.remove }>remove</button>
-					</div>
-
 				<div id='header'>
 					<span className='header-element'>Bryan Ma</span> 
 					<Form 
