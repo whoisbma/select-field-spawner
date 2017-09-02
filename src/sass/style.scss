@@ -16,7 +16,8 @@ $header-font-size: 24px;
 
 .header-element {
 	margin: 0 0.5em 0 0;
-
+	transition: left 0.5s, opacity 0.1s linear;
+	-webkit-transition: left 0.5s, opacity 0.1s linear;	
 }
 
 select {

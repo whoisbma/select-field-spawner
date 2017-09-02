@@ -2,7 +2,7 @@ require('../sass/style.scss');
 
 import React from 'react';
 import { Text } from './text.jsx';
-import { arrayData } from './data.jsx';
+import { data } from './data.jsx';
 
 export class Form extends React.Component {
 	constructor(props) {
@@ -16,6 +16,8 @@ export class Form extends React.Component {
 			visible: this.isRoot,
 			triggerChildKillAnimation: false,
 		};
+
+		this.getPostText = this.getPostText.bind(this);
 
 		this.handleChange = this.handleChange.bind(this);
 		this.setToValue = this.setToValue.bind(this);
@@ -105,7 +107,7 @@ export class Form extends React.Component {
 	getOptions() {
 		let options;
 		if (this.props.id !== null) {
-			options = arrayData[this.props.id].options.map((obj, i) =>
+			options = data[this.props.id].options.map((obj, i) =>
 				<option value={ i } key={ i }>{ obj.text }</option>
 			);
 		} else {
@@ -125,7 +127,7 @@ export class Form extends React.Component {
 	getChildForm() {
 		let nextData = {};
 		if (!this.isCustomForm()) {
-			nextData = arrayData[this.props.id];
+			nextData = data[this.props.id];
 		} else {
 			nextData = this.props.custom;
 		}
@@ -178,6 +180,24 @@ export class Form extends React.Component {
 		}
 	}
 
+	getPostText() {
+		// i might want this to return a custom <Text /> react component.
+		// this way i could control mounting animations as well here.
+
+		if (this.isCustomForm()) return null;
+
+		if (data[this.props.id].options[this.state.value] && 
+				data[this.props.id].options[this.state.value].postText) {
+			return (
+				<span className='header-element'>
+					{ data[this.props.id].options[this.state.value].postText }
+				</span>
+			);
+		} else {
+			return null;
+		}
+	}
+
 	render() {
 		return (
 			<span>
@@ -193,6 +213,7 @@ export class Form extends React.Component {
 								ref={ (select) => { this.hiddenSelect = select; } }>
 					<option ref={ (option) => { this.hiddenOption = option; } }></option>
 				</select>
+				{ this.getPostText() }
 				{ this.getChildForm() }
 			</span>
 		);
