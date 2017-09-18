@@ -31,7 +31,9 @@ class App extends React.Component {
 	}
 
 	generate() {
-		this.lastForm.setToValue(Math.floor(Math.random() * (this.lastForm.selectForm.options.length - 1)));
+		// if (this.lastForm.selectForm.options.length > 1) {
+			this.lastForm.setToValue(Math.floor(Math.random() * (this.lastForm.selectForm.options.length - 1)));
+		// }
 	}
 
 	remove() {
@@ -56,11 +58,15 @@ class App extends React.Component {
 	render() {
 		return (
 			<div id='container'>
+				<div>
+					<button onClick={ () => this.generate() }>generate</button>
+					<button onClick={ () => this.remove() }>remove</button>
+				</div>
 				<div id='header'>
 					<span className='header-element'>Bryan Ma</span> 
 					<Form 
 						id={ 0 }
-						setForAdd={ (childRef) => { this.lastForm = childRef } }
+						setForSelection={ (childRef) => { this.lastForm = childRef } }
 						setForRemoval={ (childRef) => { this.secondLastForm = childRef } }
 					/>
 				</div>

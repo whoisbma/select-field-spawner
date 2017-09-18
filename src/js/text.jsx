@@ -2,14 +2,23 @@ require('../sass/style.scss');
 
 import React from 'react';
 import { Form } from './form.jsx';
-import { arrayData } from './data.jsx';
 
 export class Text extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			visible: false,
+		};
+
+		this.mountAnimationTimeout = null;
 	}
 
-	componentDidMount() {	}
+	componentDidMount() {
+		this.mountAnimationTimeout = setTimeout(() => {
+			this.setState({ visible: true });
+		} , 1);
+	}
 
 	componentWillUpdate(nextProps, nextState) { }
 
@@ -19,7 +28,23 @@ export class Text extends React.Component {
 
 	componentWillReceiveProps(nextProps) { }
 
-	shouldComponentUpdate() { }
+	shouldComponentUpdate() { 
+		return true;
+	}
 
-	componentWillUnmount() { }
+	componentWillUnmount() { 
+		clearTimeout(this.mountAnimationTimeout);
+	}
+
+	render() {
+		return (
+			<span className={ 'header-element ' + (this.state.visible ? 'on' : 'off')}>
+				{ this.props.textVal }
+			</span>
+		);
+	}
+}
+
+Text.defaultProps = {
+	textVal: null,
 }

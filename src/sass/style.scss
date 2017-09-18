@@ -1,5 +1,10 @@
 $typeface: Menlo;
 $header-font-size: 24px;
+$bg-color: #EEE;
+
+body {
+	background-color: $bg-color;
+}
 
 #container {
 	padding: 50px;
@@ -10,14 +15,26 @@ $header-font-size: 24px;
 	font-family: $typeface;
 	font-size: $header-font-size;
 	line-height: 2.5em;
-	background-color: white;
+	background-color: $bg-color;
+	color: #000;
 }
 
 
 .header-element {
+	position: relative;
 	margin: 0 0.5em 0 0;
-	transition: left 0.5s, opacity 0.1s linear;
-	-webkit-transition: left 0.5s, opacity 0.1s linear;	
+	transition: left 0.5s, opacity 0.5s linear;
+	-webkit-transition: left 0.5s, opacity 0.5s linear;	
+	
+	&.on {
+		opacity: 1;
+		left: 0px;
+	}
+
+	&.off {
+		opacity: 0;
+		left: 50px;
+	}
 }
 
 select {
@@ -27,9 +44,8 @@ select {
 		font-size: $header-font-size;
 		position: relative;
 
-
-		transition: left 0.5s, opacity 0.1s linear;
-		-webkit-transition: left 0.5s, opacity 0.1s linear;	
+		transition: left 0.5s, opacity 0.5s linear;
+		-webkit-transition: left 0.5s, opacity 0.5s linear;	
 
 		&.on {
 			opacity: 1;
