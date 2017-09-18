@@ -26,10 +26,13 @@ export class Form extends React.Component {
 
 		this.mountAnimationTimeout = null;
 		this.setRemovalTimeout = null;
+
+		this.hasChild = false;
 	}
 
 	componentDidMount() {
 		this.props.setForSelection(this);
+
 		this.mountAnimationTimeout = setTimeout(() => {
 			this.setState({ visible: true });
 		} , 1);
@@ -62,7 +65,7 @@ export class Form extends React.Component {
 
 	// called by App to whatever its set to the second to last form of, in order to tell its child to trigger its removal animation and change its form status back to -1
 	reset() {	
-		if (this.state.value != -1) {
+		if (this.state.value != -1 && !this.state.triggerChildKillAnimation) {
 
 			this.setState({
 				triggerChildKillAnimation: true
@@ -70,43 +73,34 @@ export class Form extends React.Component {
 
 			if (!this.isRoot) this.props.setParentForFutureRemoval();
 
-			let opt1 = document.createElement('option');
-			opt1.value = "-1";
-			opt1.text = "-";
-			opt1.key = "-1";
+			const resetForm = function() {
+				let opt1 = document.createElement('option');
+				opt1.value = "-1";
+				opt1.text = "-";
+				opt1.key = "-1";
 
-			this.selectForm.options.add(opt1, 0);
-			this.props.setForSelection(this);
-			this.setState({
-				value: -1,
-				width: '50px',
-			});
+				this.selectForm.options.add(opt1, 0);
+				this.props.setForSelection(this);
+				this.setState({
+					value: -1,
+					width: '50px',
+				});
+			}
 
-			// start a timeout call that will:
-			//		set the parent for future removal once its finished.
-			//		set this form's value back to -1 with starting size
-			//		set this form to be the one that App can give a random value to
-
-			// this.setRemovalTimeout = setTimeout(() => {
-			// 	if (!this.isRoot) this.props.setParentForFutureRemoval();
-
-			// 	let opt1 = document.createElement('option');
-			// 	opt1.value = "-1";
-			// 	opt1.text = "-";
-			// 	opt1.key = "-1";
-
-			// 	this.selectForm.options.add(opt1, 0);
-			// 	this.props.setForSelection(this);
-			// 	this.setState({
-			// 		value: -1,
-			// 		width: '50px',
-			// 	});
-			// }, 100);
+			if (this.hasChild ) {
+				this.setRemovalTimeout = setTimeout(resetForm.bind(this), 300);
+			} else {
+				resetForm.bind(this);
+			}
 		}	
 	}
 
 	setToValue(n) {
 		this.props.setForRemoval(this); 
+
+		this.setState({
+				triggerChildKillAnimation: false
+			});
 
 		if (this.state.value === -1) {
 			this.selectForm.options[0].remove();
@@ -157,6 +151,9 @@ export class Form extends React.Component {
 		// if there's an actual target, set the form to it
 		if (nextData.options[this.state.value] != null && 
 				nextData.options[this.state.value].target != null) {
+			
+			this.hasChild = true;
+			
 			return (
 				<Form
 					id={ nextData.options[this.state.value].target }
@@ -173,19 +170,31 @@ export class Form extends React.Component {
 							 nextData.options[this.state.value].target == null &&
 							 nextData.options.length > 1) {
 
+			this.hasChild = true;
+
 			let newForm = {
 				name: nextData.name + this.state.value,
 				index: nextData.index,
 			};
 			
 			if (this.isCustomForm()) {
-				newForm.options = nextData.options.filter((obj, i) => i != this.state.value && obj.text !== 'and')
-																					.map((obj) => { return { text: obj.text, target: obj.target };  
-																					});
+				newForm.options = nextData.options
+					.filter((obj, i) => i != this.state.value && obj.text !== 'and')
+					.map((obj) => { return { 
+						text: obj.text, 
+						target: obj.target,
+						postText: obj.postText,
+					};  
+				});
 			} else {
-				newForm.options = nextData.options.filter((obj, i) => i != this.state.value && obj.text !== 'and')
-																 					.map((obj) => { return { text: 'and ' + obj.text,	target: obj.target}; 
-																 					});
+				newForm.options = nextData.options
+					.filter((obj, i) => i != this.state.value && obj.text !== 'and')
+					.map((obj) => { return { 
+ 						text: 'and ' + obj.text,	
+ 						target: obj.target,
+ 						postText: obj.postText,
+ 					}; 
+				});
 			}
 			// newForm.options.push({ text: 'and', target: 0 });
 			
@@ -208,15 +217,32 @@ export class Form extends React.Component {
 		// i might want this to return a custom <Text /> react component.
 		// this way i could control mounting animations as well here.
 
-		if (this.isCustomForm()) return null;
-
-		if (data[this.props.id].options[this.state.value] && 
-				data[this.props.id].options[this.state.value].postText) {
-			return (
-				<Text textVal={ data[this.props.id].options[this.state.value].postText }/>
-			);
+		if (!this.isCustomForm()) {		
+			if (data[this.props.id].options[this.state.value] && 
+					data[this.props.id].options[this.state.value].postText) {
+				this.hasChild = true;
+				return (
+					<Text 
+						textVal={ data[this.props.id].options[this.state.value].postText } 
+						triggerKillAnimation={ this.state.triggerChildKillAnimation }
+					/>
+				);
+			} else {
+				return null;
+			}
 		} else {
-			return null;
+			if (this.props.custom.options[this.state.value] &&
+					this.props.custom.options[this.state.value].postText) {
+				this.hasChild = true;
+				return (
+					<Text 
+						textVal={ this.props.custom.options[this.state.value].postText }
+						triggerKillAnimation={ this.state.triggerChildKillAnimation }
+					/>
+				);
+			} else {
+				return null;
+			}
 		}
 	}
 

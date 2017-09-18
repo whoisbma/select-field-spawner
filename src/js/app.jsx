@@ -63,7 +63,7 @@ class App extends React.Component {
 					<button onClick={ () => this.remove() }>remove</button>
 				</div>
 				<div id='header'>
-					<span className='header-element'>Bryan Ma</span> 
+					<span className='header-element'>Bryan Ma is</span> 
 					<Form 
 						id={ 0 }
 						setForSelection={ (childRef) => { this.lastForm = childRef } }

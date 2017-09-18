@@ -26,7 +26,13 @@ export class Text extends React.Component {
 
 	componentWillMount() { }
 
-	componentWillReceiveProps(nextProps) { }
+	componentWillReceiveProps(nextProps) { 
+		if (nextProps.triggerKillAnimation) {
+			this.setState({ 
+				visible: false,
+			});
+		}
+	}
 
 	shouldComponentUpdate() { 
 		return true;
@@ -47,4 +53,5 @@ export class Text extends React.Component {
 
 Text.defaultProps = {
 	textVal: null,
-}
+	triggerKillAnimation: null,
+};

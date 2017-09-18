@@ -14,7 +14,7 @@ body {
 	padding: 20px 0 0 0;
 	font-family: $typeface;
 	font-size: $header-font-size;
-	line-height: 2.5em;
+	line-height: 2.2em;
 	background-color: $bg-color;
 	color: #000;
 }
@@ -23,8 +23,8 @@ body {
 .header-element {
 	position: relative;
 	margin: 0 0.5em 0 0;
-	transition: left 0.5s, opacity 0.5s linear;
-	-webkit-transition: left 0.5s, opacity 0.5s linear;	
+	transition: left 0.3s, opacity 0.3s linear;
+	-webkit-transition: left 0.3s, opacity 0.3s linear;	
 	
 	&.on {
 		opacity: 1;
@@ -33,7 +33,7 @@ body {
 
 	&.off {
 		opacity: 0;
-		left: 50px;
+		left: 10px;
 	}
 }
 
@@ -44,8 +44,8 @@ select {
 		font-size: $header-font-size;
 		position: relative;
 
-		transition: left 0.5s, opacity 0.5s linear;
-		-webkit-transition: left 0.5s, opacity 0.5s linear;	
+		transition: left 0.3s, opacity 0.3s linear;
+		-webkit-transition: left 0.3s, opacity 0.3s linear;	
 
 		&.on {
 			opacity: 1;
@@ -53,7 +53,7 @@ select {
 		}
 		&.off{
 			opacity: 0;
-			left: 50px;
+			left: 10px;
 		}
 		
 		&.hidden {

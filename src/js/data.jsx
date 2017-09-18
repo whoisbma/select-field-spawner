@@ -19,65 +19,56 @@ option data model:
 
 // bryan is 
 
+/// a technologist with a background in
+// a technologist of emerging media
+
 
 module.exports = {
 	data: [
 		{
-			name: 'start',
-			index: 0,
-			options: [
-				{	
-					text: 'is', 
-					target: 1, 
-					postText: null 
-				},
-				{ 
-					text: 'was', 
-					target: 7, 
-					postText: null 
-				}
-			]
-		},
-		{
 			name: 'is',
-			index: 1,
+			index: 0,
 			options: [
 				{ 
 					text: 'a technologist', 
-					target: 2, 
+					target: 1, 
 					postText: 'at museum design firm Gallagher and Associates in New York,' 
 				},
 				{ 
 					text: 'an artist', 
-					target: 3, 
+					target: 2, 
 					postText: 'interested in', 
 				},
 				{ 
 					text: 'an educator', 
-					target: 4, 
+					target: 3, 
 					postText: 'at Parsons School of Design, teaching'
+				},
+				{
+					text: 'a former',
+					target: 6,
 				},
 			]
 		},
 		{
 			name: 'a technologist',
-			index: 2,
+			index: 1,
 			options: [
 				{ 
 					text: 'working with', 
-					target: 5, 
-					postText: 'full stack web and native technologies such as',
+					target: 4, 
+					postText: 'technologies such as',
 				},
 				{ 
 					text: 'working on', 
-					target: 6, 
+					target: 5, 
 					postText: 'interactive exhibits and installations like',
 				},
 			]
 		},
 		{
 			name: 'an artist',
-			index: 3,
+			index: 2,
 			options: [
 				{ 
 					text: 'computational aesthetics', 
@@ -98,7 +89,7 @@ module.exports = {
 		},
 		{
 			name: 'an educator',
-			index: 4,
+			index: 3,
 			options: [
 				{ 
 					text: 'generative design and computational art', 
@@ -119,33 +110,33 @@ module.exports = {
 		},
 		{
 			name: 'working with',
-			index: 5,
+			index: 4,
 			options: [
 				{ 
-					text: 'Cinder and OpenFrameworks', 
+					text: 'C++ frameworks', 
 					target: null, 
-					postText: null 
+					postText: 'like Cinder and OpenFrameworks',
 				},
 				{ 
-					text: 'React and Node',
+					text: 'full stack web',
 					target: null, 
-					postText: null,
+					postText: 'especially React and Node',
 				},
 				{ 
-					text: 'ARKit and ARCore', 
+					text: 'augmented reality', 
 					target: null, 
-					postText: null 
+					postText: 'like ARKit and ARCore',
 				},
 				{ 
 					text: 'Unity and Unreal', 
 					target: null, 
-					postText: null 
+					postText: 'for immersive environments in VR',
 				},
 			]
 		},
 		{
 			name: 'working on',
-			index: 6,
+			index: 5,
 			options: [
 				{ 
 					text: 'Johnson and Johnson heritage museum', 
@@ -165,24 +156,19 @@ module.exports = {
 			]
 		},
 		{
-			name: 'was',
-			index: 7,
+			name: 'a former',
+			index: 6,
 			options: [
 				{ 
-					text: 'a video game industry designer and producer', 
+					text: 'video game industry designer and producer', 
 					target: null, 
 					postText: 'launching games for console, PC, and mobile platforms'
 				},
 				{ 
-					text: 'an Eyebeam project resident', 
+					text: 'Eyebeam project resident', 
 					target: null, 
 					postText: null
 				},
-				{
-					text: 'a freelance creative technologist',
-					target: null,
-					postText: null,
-				}
 			]
 		}
 	]
