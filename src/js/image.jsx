@@ -2,7 +2,7 @@ require('../sass/style.scss');
 
 import React from 'react';
 
-export class Text extends React.Component {
+export class Image extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -43,14 +43,15 @@ export class Text extends React.Component {
 
 	render() {
 		return (
-			<span className={ 'header-element ' + (this.state.visible ? 'on' : 'off')}>
-				{ this.props.textVal }
-			</span>
+			<img 
+				className={ 'header-element ' + (this.state.visible ? 'on' : 'off')}
+				src={ this.props.url }
+			/>
 		);
 	}
 }
 
-Text.defaultProps = {
-	textVal: null,
+Image.defaultProps = {
+	url: null,
 	triggerKillAnimation: null,
 };

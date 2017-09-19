@@ -2,6 +2,7 @@ require('../sass/style.scss');
 
 import React from 'react';
 import { Text } from './text.jsx';
+import { Image } from './image.jsx';
 import { data } from './data.jsx';
 
 export class Form extends React.Component {
@@ -214,15 +215,13 @@ export class Form extends React.Component {
 	}
 
 	getPostText() {
-		// i might want this to return a custom <Text /> react component.
-		// this way i could control mounting animations as well here.
-
 		if (!this.isCustomForm()) {		
 			if (data[this.props.id].options[this.state.value] && 
 					data[this.props.id].options[this.state.value].postText) {
 				this.hasChild = true;
 				return (
 					<Text 
+						key={ data[this.props.id].options[this.state.value].postText } 
 						textVal={ data[this.props.id].options[this.state.value].postText } 
 						triggerKillAnimation={ this.state.triggerChildKillAnimation }
 					/>
@@ -236,7 +235,40 @@ export class Form extends React.Component {
 				this.hasChild = true;
 				return (
 					<Text 
+						key={ this.props.custom.options[this.state.value].postText } 
 						textVal={ this.props.custom.options[this.state.value].postText }
+						triggerKillAnimation={ this.state.triggerChildKillAnimation }
+					/>
+				);
+			} else {
+				return null;
+			}
+		}
+	}
+
+	getImage() {
+		if (!this.isCustomForm()) {
+			if (data[this.props.id].options[this.state.value] && 
+					data[this.props.id].options[this.state.value].image) {
+				this.hasChild = true;
+				return (
+					<Image
+						key={ data[this.props.id].options[this.state.value].image }
+						url={ data[this.props.id].options[this.state.value].image }
+						triggerKillAnimation={ this.state.triggerChildKillAnimation }
+					/>
+				);
+			} else {
+				return null;
+			}
+		} else {
+			if (this.props.custom.options[this.state.value] &&
+					this.props.custom.options[this.state.value].image) {
+				this.hasChild = true;
+				return (
+					<Image
+						key={ this.props.custom.options[this.state.value].image }
+						url={ this.props.custom.options[this.state.value].image }
 						triggerKillAnimation={ this.state.triggerChildKillAnimation }
 					/>
 				);
@@ -262,6 +294,7 @@ export class Form extends React.Component {
 					<option ref={ (option) => { this.hiddenOption = option; } }></option>
 				</select>
 				{ this.getPostText() }
+				{ this.getImage() }
 				{ this.getChildForm() }
 			</span>
 		);

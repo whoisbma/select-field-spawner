@@ -22,6 +22,8 @@ option data model:
 /// a technologist with a background in
 // a technologist of emerging media
 
+// a technologist working in the fields of games, interactive exhibits, etc.
+
 
 module.exports = {
 	data: [
@@ -32,7 +34,8 @@ module.exports = {
 				{ 
 					text: 'a technologist', 
 					target: 1, 
-					postText: 'at museum design firm Gallagher and Associates in New York,' 
+					postText: '👨‍💻 at museum design firm Gallagher and Associates in New York,',
+					image: 'http://bryan-ma.com/content/front-img/5.jpg',
 				},
 				{ 
 					text: 'an artist', 
@@ -42,11 +45,12 @@ module.exports = {
 				{ 
 					text: 'an educator', 
 					target: 3, 
-					postText: 'at Parsons School of Design, teaching'
+					postText: 'at Parsons School of Design, teaching',
 				},
 				{
 					text: 'a former',
 					target: 6,
+					postText: null,
 				},
 			]
 		},
@@ -146,7 +150,7 @@ module.exports = {
 				{ 
 					text: 'Best Friends Animal Society', 
 					target: null, 
-					postText: null 
+					postText: null, 
 				},
 				{ 
 					text: 'Illinois Holocaust Museum', 
@@ -161,13 +165,13 @@ module.exports = {
 			options: [
 				{ 
 					text: 'video game industry designer and producer', 
-					target: null, 
-					postText: 'launching games for console, PC, and mobile platforms'
+					target: null,
+					postText: 'launching games for console, PC, and mobile platforms',
 				},
 				{ 
 					text: 'Eyebeam project resident', 
 					target: null, 
-					postText: null
+					postText: null,
 				},
 			]
 		}
