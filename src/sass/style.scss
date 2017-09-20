@@ -16,7 +16,6 @@ body {
 	font-size: $header-font-size;
 	font-weight: bold;
 	line-height: 2.2em;
-	background-color: $bg-color;
 	color: #000;
 }
 
@@ -26,7 +25,7 @@ body {
 	margin: 0 0.5em 0 0;
 	transition: left 0.3s, opacity 0.3s linear;
 	-webkit-transition: left 0.3s, opacity 0.3s linear;	
-	
+
 	&.on {
 		opacity: 1;
 		left: 0px;
@@ -35,6 +34,19 @@ body {
 	&.off {
 		opacity: 0;
 		left: 10px;
+	}
+}
+
+img.header-element {
+	transition: opacity 0.3s linear;
+	-webkit-transition: opacity 0.3s linear;
+
+	&.on {
+		opacity: 1;
+	}
+
+	&.off {
+		opacity: 0;
 	}
 }
 

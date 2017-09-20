@@ -3,6 +3,7 @@ require('../sass/style.scss');
 import React from 'react';
 import { Text } from './text.jsx';
 import { Image } from './image.jsx';
+import { Link } from './link.jsx';
 import { data } from './data.jsx';
 
 export class Form extends React.Component {
@@ -91,7 +92,7 @@ export class Form extends React.Component {
 			if (this.hasChild ) {
 				this.setRemovalTimeout = setTimeout(resetForm.bind(this), 300);
 			} else {
-				resetForm.bind(this);
+				this.setRemovalTimeout = setTimeout(resetForm.bind(this), 1);
 			}
 		}	
 	}
@@ -215,17 +216,12 @@ export class Form extends React.Component {
 	}
 
 	getPostText() {
+		let text;
 		if (!this.isCustomForm()) {		
 			if (data[this.props.id].options[this.state.value] && 
 					data[this.props.id].options[this.state.value].postText) {
 				this.hasChild = true;
-				return (
-					<Text 
-						key={ data[this.props.id].options[this.state.value].postText } 
-						textVal={ data[this.props.id].options[this.state.value].postText } 
-						triggerKillAnimation={ this.state.triggerChildKillAnimation }
-					/>
-				);
+				text = data[this.props.id].options[this.state.value].postText;
 			} else {
 				return null;
 			}
@@ -233,31 +229,28 @@ export class Form extends React.Component {
 			if (this.props.custom.options[this.state.value] &&
 					this.props.custom.options[this.state.value].postText) {
 				this.hasChild = true;
-				return (
-					<Text 
-						key={ this.props.custom.options[this.state.value].postText } 
-						textVal={ this.props.custom.options[this.state.value].postText }
-						triggerKillAnimation={ this.state.triggerChildKillAnimation }
-					/>
-				);
+				text = this.props.custom.options[this.state.value].postText;
 			} else {
 				return null;
 			}
 		}
+
+		return (
+			<Text 
+				key={ text } 
+				textVal={ text } 
+				triggerKillAnimation={ this.state.triggerChildKillAnimation }
+			/>
+		);
 	}
 
 	getImage() {
+		let img;
 		if (!this.isCustomForm()) {
 			if (data[this.props.id].options[this.state.value] && 
 					data[this.props.id].options[this.state.value].image) {
 				this.hasChild = true;
-				return (
-					<Image
-						key={ data[this.props.id].options[this.state.value].image }
-						url={ data[this.props.id].options[this.state.value].image }
-						triggerKillAnimation={ this.state.triggerChildKillAnimation }
-					/>
-				);
+				img = data[this.props.id].options[this.state.value].image;
 			} else {
 				return null;
 			}
@@ -265,17 +258,44 @@ export class Form extends React.Component {
 			if (this.props.custom.options[this.state.value] &&
 					this.props.custom.options[this.state.value].image) {
 				this.hasChild = true;
-				return (
-					<Image
-						key={ this.props.custom.options[this.state.value].image }
-						url={ this.props.custom.options[this.state.value].image }
-						triggerKillAnimation={ this.state.triggerChildKillAnimation }
-					/>
-				);
+				img = this.props.custom.options[this.state.value].image
 			} else {
 				return null;
 			}
 		}
+
+		return (
+			<Image
+				key={ img }
+				url={ img }
+				triggerKillAnimation={ this.state.triggerChildKillAnimation }
+			/>
+		);
+	}
+
+	getLink() {
+		let url;
+		if (!this.isCustomForm()) {
+			if (data[this.props.id].options[this.state.value] && 
+					data[this.props.id].options[this.state.value].link) {
+				this.hasChild = true;
+				url = data[this.props.id].options[this.state.value].link;
+			} else {
+				return null;
+			}
+		} else {
+			if (this.props.custom.options[this.state.value] &&
+					this.props.custom.options[this.state.value].link) {
+				this.hasChild = true;
+				url = this.props.custom.options[this.state.value].link;
+			} else {
+				return null;
+			}
+		}
+
+		return (
+			<Link key={ url } url={ url } text='🔗' />
+		);
 	}
 
 	render() {
@@ -294,6 +314,7 @@ export class Form extends React.Component {
 					<option ref={ (option) => { this.hiddenOption = option; } }></option>
 				</select>
 				{ this.getPostText() }
+				{ this.getLink() }
 				{ this.getImage() }
 				{ this.getChildForm() }
 			</span>

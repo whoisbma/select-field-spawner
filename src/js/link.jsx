@@ -2,7 +2,7 @@ require('../sass/style.scss');
 
 import React from 'react';
 
-export class Image extends React.Component {
+export class Link extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -11,13 +11,6 @@ export class Image extends React.Component {
 		};
 
 		this.mountAnimationTimeout = null;
-
-		this.style = {
-			position: 'absolute',
-			top: Math.random() * window.innerHeight,
-			left: Math.random() * window.innerWidth,
-			zIndex: -1,
-		};
 	}
 
 	componentDidMount() {
@@ -49,19 +42,17 @@ export class Image extends React.Component {
 	}
 
 	render() {
-
-
 		return (
-			<img 
-				style={ this.style }
-				className={ 'header-element ' + (this.state.visible ? 'on' : 'off')}
-				src={ this.props.url }
-			/>
+
+			<span className={ 'header-element ' + (this.state.visible ? 'on' : 'off')}>
+				<a key={ this.props.url } href={ this.props.url }	target='_blank'>{ this.props.text }</a>
+			</span>
 		);
 	}
 }
 
-Image.defaultProps = {
+Text.defaultProps = {
 	url: null,
+	text: null,
 	triggerKillAnimation: null,
 };

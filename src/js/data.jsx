@@ -35,6 +35,7 @@ module.exports = {
 					text: 'a technologist', 
 					target: 1, 
 					postText: '👨‍💻 at museum design firm Gallagher and Associates in New York,',
+					link: 'http://www.gallagherdesign.com/',
 					image: 'http://bryan-ma.com/content/front-img/5.jpg',
 				},
 				{ 
