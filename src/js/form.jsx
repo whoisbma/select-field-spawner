@@ -4,6 +4,8 @@ import React from 'react';
 import { Text } from './text.jsx';
 import { Image } from './image.jsx';
 import { Link } from './link.jsx';
+import { Submit } from './submit.jsx';
+
 import { data } from './data.jsx';
 
 export class Form extends React.Component {
@@ -294,7 +296,7 @@ export class Form extends React.Component {
 		}
 
 		return (
-			<Link key={ url } url={ url } text='🔗' />
+			<Link key={ url } url={ url } triggerKillAnimation={ this.state.triggerChildKillAnimation } text='🔗' />
 		);
 	}
 
@@ -313,6 +315,7 @@ export class Form extends React.Component {
 								ref={ (select) => { this.hiddenSelect = select; } }>
 					<option ref={ (option) => { this.hiddenOption = option; } }></option>
 				</select>
+				{/*<Submit triggerKillAnimation={ this.state.triggerChildKillAnimation }/>*/}
 				{ this.getPostText() }
 				{ this.getLink() }
 				{ this.getImage() }

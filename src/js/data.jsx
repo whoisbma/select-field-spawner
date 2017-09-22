@@ -24,6 +24,8 @@ option data model:
 
 // a technologist working in the fields of games, interactive exhibits, etc.
 
+// maybe don't label. just what i do. bryan builds interactive installations for museums. bryan teaches classes at parsons. bryan is interested in the absurd.
+
 
 module.exports = {
 	data: [
@@ -39,7 +41,7 @@ module.exports = {
 					image: 'http://bryan-ma.com/content/front-img/5.jpg',
 				},
 				{ 
-					text: 'an artist', 
+					text: 'a artist', 
 					target: 2, 
 					postText: 'interested in', 
 				},
